@@ -1,3 +1,7 @@
+=============ETHICAL HACKING BY SPIDER (MALAYA)===================
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
 apt-get update
 man - manual
 -l - for lomg listing
