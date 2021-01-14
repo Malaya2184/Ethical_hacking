@@ -1,4 +1,4 @@
-=============ETHICAL HACKING BY SPIDER (MALAYA)===================
+=============ETHICAL HACKING BY SPIDER (MALAYA)=================== Must learn about john the ripper
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -170,5 +170,16 @@ TO CRAETE A WORDLIST OF PASSWORDS:-
 ================================
 crunch 8 8 1234abcd -o motapa.txt -t d@@@@@1
 
-
-
+=================================
+To compare the handshake filewith the word list to findout the key
+===================================================================
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+aircrack-ng wpa_handshake-01.cap (handshake cap file name) -w (to pass wordlist) spide..txt (created wordlist)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+you can use GPU insted of CPU and rainbo table for faster processing
+=================================================================================================
+after connecting to your router you can run the command 
+ifconfig wlan0 - to get the int addr i.e the ip address of the router the browse that ip adress e.g
+let ip is- 192.68.42.36
+then browse- 192.68.42.1 (by which you can go to the routers setting so than you can modify the setting)
+===================================================================================================
