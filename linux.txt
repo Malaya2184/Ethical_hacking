@@ -182,4 +182,8 @@ after connecting to your router you can run the command
 ifconfig wlan0 - to get the int addr i.e the ip address of the router the browse that ip adress e.g
 let ip is- 192.68.42.36
 then browse- 192.68.42.1 (by which you can go to the routers setting so than you can modify the setting)
+
 ===================================================================================================
+The most important step in hacking or penetration testing is information gathering !!!!!!
+
+section 10
